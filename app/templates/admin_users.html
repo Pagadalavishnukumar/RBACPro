@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Manage Users</h2>
+<table class="table table-bordered table-striped datatable mt-3">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('main.update_role', user_id=user.id) }}">
+          <select name="role" class="form-select" onchange="this.form.submit()">
+            <option value="User" {% if user.role.name=='User' %}selected{% endif %}>User</option>
+            <option value="Manager" {% if user.role.name=='Manager' %}selected{% endif %}>Manager</option>
+            <option value="Admin" {% if user.role.name=='Admin' %}selected{% endif %}>Admin</option>
+          </select>
+        </form>
+      </td>
+      <td>
+        <form method="POST" action="{{ url_for('main.delete_user', user_id=user.id) }}">
+          <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
